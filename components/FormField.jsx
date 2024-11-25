@@ -14,7 +14,7 @@ const FormField = ({title,value,placeholder,handleChangeText,otherStyles,...prop
         value={value}
         placeholder={placeholder}
         placeholderTextColor="#7B7B8B"
-        onChange={handleChangeText}
+        onChangeText={(text) => handleChangeText && handleChangeText(text)}
         secureTextEntry = {title === 'Password' && !showPassword}
         />
         {title === 'Password' && (<TouchableOpacity

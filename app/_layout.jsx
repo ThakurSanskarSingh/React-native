@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { Link } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import {useFonts} from 'expo-font'
+import GlobalProvider from '../context/GlobalProvider'
 
 
 const RootLayout = () => {
@@ -33,12 +34,14 @@ const RootLayout = () => {
     return null;
   }
   return (
+    <GlobalProvider>
     <Stack>
         <Stack.Screen name = "index" options = {{headerShown:false}} />
         <Stack.Screen name = "(auth)" options = {{headerShown:false}} />
         <Stack.Screen name = "(tabs)" options = {{headerShown:false}} />
         {/* <Stack.Screen name = "/search/[query]" options = {{headerShown:false}} /> */}
     </Stack>
+    </GlobalProvider>
   )
 }
 

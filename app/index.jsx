@@ -5,7 +5,10 @@ import "../global.css"
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {images} from '../constants'
 import CustomBottom from '../components/customButton';
+import { useGlobalContext } from '../context/GlobalProvider';
 export default function App() {
+  const {loading,isLoggedIn} = useGlobalContext()
+  if(!loading && isLoggedIn) return <Redirect href='/home' />
 return(
   <>
   <SafeAreaView className = 'bg-primary h-full'>
