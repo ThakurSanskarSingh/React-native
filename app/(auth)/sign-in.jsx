@@ -11,31 +11,34 @@ import { Link } from 'expo-router'
 import { getCurrentUser, signIn } from '../../lib/appwrite'
 import { Alert } from 'react-native'
 import { useGlobalContext } from '../../context/GlobalProvider'
+import { handleLogin } from './authHelpers';
 const SignIn = () => {
+
   const {setUser,setIsLoggedIn } = useGlobalContext()
   const [form,setForm] = useState({
     email : '',
     password : ''
   })
-  const [isLoading,setIsloading] = useState(false)
+  const [isLoading,setIsLoading] = useState(false)
   const submit = async () => {
     if( !form.email || !form.password){
       Alert.alert('Error','Please Fill in all the fields')
     }
-    setIsloading(true)
+    setIsLoading(true)
     try {
-      await signIn(form.email,form.password) 
-      const result = await getCurrentUser()
-      setUser(result)
-      setIsLoggedIn(true)
-
-      router.replace('/home')
+      const currentUser = await handleLogin(form.email, form.password);
+      if (currentUser) {
+        setUser(currentUser); // Set the user in global state
+        setIsLoggedIn(true); // Update the logged-in state
+        router.replace("/home"); // Navigate to the home page
+      }
     } catch (error) {
-      console.log(error)
+      console.error("Login failed:", error);
+      Alert.alert("Error", "Login failed. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-    finally {
-      setIsloading(false)
-    }
+  
 
   }
   return (

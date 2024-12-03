@@ -6,7 +6,7 @@ import {images} from '../../constants'
 import FormField from '../../components/FormField'
 import CustomBottom from '../../components/customButton'
 import { Link, router } from 'expo-router'
-import { createUser } from '../../lib/appwrite'
+import { createUser,getCurrentUser,signIn } from '../../lib/appwrite'
 import { useGlobalContext } from '../../context/GlobalProvider'
 const SignUp = () => {
   const { setUser, setIsLoggedIn } = useGlobalContext();
@@ -29,13 +29,20 @@ const SignUp = () => {
         form.password,
         form.username
       );
-      setUser(result)
-      setIsLoggedIn(true)
+
+    const session = await signIn(form.email, form.password); // Ensure session is created for the user
+    console.log('User signed in:', session);
+
+    // Step 3: Set user data and login state
+    const currentUser = await getCurrentUser();  // Fetch current user details from Appwrite
+    setUser(currentUser);
+    setIsLoggedIn(true);
       console.log('Create User Result:', result);
 
       router.replace('/home')
     } catch (error) {
-      console.log(error)
+      console.log('Error during signup:', error);
+      Alert.alert('Error', 'Signup failed. Please try again.');
     }
     finally {
       setIsloading(false)

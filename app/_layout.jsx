@@ -6,6 +6,7 @@ import { Link } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import {useFonts} from 'expo-font'
 import GlobalProvider from '../context/GlobalProvider'
+import AppNavigator from '../components/AppNavigator'
 
 
 const RootLayout = () => {
@@ -34,13 +35,16 @@ const RootLayout = () => {
     return null;
   }
   return (
+    
     <GlobalProvider>
+      <AppNavigator>
     <Stack>
         <Stack.Screen name = "index" options = {{headerShown:false}} />
         <Stack.Screen name = "(auth)" options = {{headerShown:false}} />
         <Stack.Screen name = "(tabs)" options = {{headerShown:false}} />
         {/* <Stack.Screen name = "/search/[query]" options = {{headerShown:false}} /> */}
     </Stack>
+    </AppNavigator>
     </GlobalProvider>
   )
 }
