@@ -1,5 +1,5 @@
-import { View, Text, Image, FlatList, RefreshControl } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, Image, FlatList, RefreshControl, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import {Tabs,Redirect} from 'expo-router'
 import icons from '../../constants'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -7,8 +7,27 @@ import {images} from '../../constants'
 import SearchInput from '../../components/SearchInputs'
 import Trending from '../../components/Trending'
 import EmptyState from '../../components/EmptyState'
+import { getAllPosts } from '../../lib/appwrite'
 const Home = () => {
    const [refresh ,setRefresh] = useState(false)
+   const [data,setData] = useState() 
+   const[isLoading,setIsLoading] = useState(false)
+
+   useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true)
+      try {
+        const response = await getAllPosts()
+      } catch (error) {
+        Alert.alert('Error',error.message)
+      }
+      finally {
+        setIsLoading(false)
+      }
+    }
+
+   },[])
+
    const onRefresh = async () => {
     setRefresh(true)
     setRefresh(false)
@@ -17,7 +36,7 @@ const Home = () => {
    <>
    <SafeAreaView className = 'bg-primary h-full ' >
    <FlatList 
-   data={[{id : 1},{id : 2},{id : 3},]}
+   data={[]}
    keyExtractor={(item) => item.id}
    renderItem={({item}) => (
     <Text className = 'text-3xl text-white'>{item.id}</Text>
@@ -41,7 +60,7 @@ const Home = () => {
       <SearchInput placeholder='Search for a video topic' />
       <View className  ='w-full flex-1pt-5 pb-8'>
         <Text className = 'text-gray-100 text-lg font-pregular mb-3'>Latest Videos</Text>
-        <Trending posts={[{id : 1},{id : 2},{id : 3},] ?? []} />
+        <Trending posts={ []} />
       </View>
 
     </View>

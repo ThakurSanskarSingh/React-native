@@ -8,10 +8,12 @@ const AppNavigator = ({ children }) => {
 
   useEffect(() => {
     if (!isLoading) {
-      if (isLoggedIn) {
+      if(isLoggedIn){
         router.replace("/home");
-      } else {
-        router.replace("/landing");
+      }
+ 
+       else {
+        router.replace("/");
       }
     }
   }, [isLoggedIn, isLoading]);
